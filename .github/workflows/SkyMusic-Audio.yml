@@ -8,7 +8,7 @@
 #
 #HLK-MT7628N
 
-name: SkyMusic-V1.0
+name: SkyMusic-引入外部包-V1.0
 
 on:
   push:
@@ -58,11 +58,18 @@ jobs:
           # ln -s /mnt/openwrt/staging_dir ./staging_dir
 
           df -h
+          
+      - name: 自定义插件
+        run: |
+            cd package
+            mkdir openwrt-package
+            cd openwrt-package
+            git clone https://github.com/skylunwen/openwrt-plus-backup.git
 
       - name: Update feeds
         run: |
           ./scripts/feeds update -a
-          ./scripts/feeds install -a
+          ./scripts/feeds install -a             
 
       - name: Generate configuration file
         run: |
@@ -178,7 +185,7 @@ jobs:
           CONFIG_PACKAGE_libxml2=y
           CONFIG_PACKAGE_luci-app-airplay2=y
           CONFIG_PACKAGE_luci-app-shairplay=y
-          CONFIG_PACKAGE_luci-app-shairport=y
+          #CONFIG_PACKAGE_luci-app-shairport=y
           # CONFIG_PACKAGE_luci-app-unblockmusic is not set
           CONFIG_PACKAGE_luci-i18n-airplay2-zh-cn=y
           CONFIG_PACKAGE_luci-proto-ipv6=y
@@ -192,7 +199,7 @@ jobs:
           CONFIG_PACKAGE_pulseaudio-daemon=y
           CONFIG_PACKAGE_shairplay=y
           CONFIG_PACKAGE_shairport-sync-openssl=y
-          CONFIG_PACKAGE_shairport=y
+          #CONFIG_PACKAGE_shairport=y
           CONFIG_PACKAGE_terminfo=y
           CONFIG_PACKAGE_upmpdcli=y
           CONFIG_PACKAGE_yajl=y
@@ -203,6 +210,7 @@ jobs:
           CONFIG_PACKAGE_ipset=y
           CONFIG_PACKAGE_libipset=y
           CONFIG_PACKAGE_libmnl=y
+          CONFIG_PACKAGE_openwrt-plus-backup=y
           EOF
 
           # 取消编译VMware镜像以及镜像填充 (不要删除被缩进的注释符号):
